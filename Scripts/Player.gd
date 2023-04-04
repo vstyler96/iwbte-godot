@@ -2,11 +2,12 @@ extends Node2D
 
 const SPEED = 20
 
-# Called when the node enters the scene tree for the first time.
-func _ready():
-  pass # Replace with function body.
+func process(event):
+  if Input.is_action_pressed("ui_left"):
+    $RigidBody2D.apply_force(Vector2.LEFT * SPEED, Vector2.LEFT)
+    return
 
+  if Input.is_action_pressed("ui_right"):
+    $RigidBody2D.apply_force(Vector2.RIGHT * SPEED, Vector2.RIGHT)
+    return
 
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta):
-  pass

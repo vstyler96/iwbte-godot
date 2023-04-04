@@ -9,16 +9,16 @@ size = Vector2(12, 18)
 [node name="Player" type="Node2D"]
 script = ExtResource("1_cfd6i")
 
-[node name="CharacterBody2D" type="RigidBody2D" parent="."]
+[node name="RigidBody2D" type="RigidBody2D" parent="."]
 disable_mode = 2
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="CharacterBody2D"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="RigidBody2D"]
 position = Vector2(-2, 6.75)
 shape = SubResource("RectangleShape2D_4jar8")
 
-[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="CharacterBody2D/CollisionShape2D"]
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="RigidBody2D/CollisionShape2D"]
 position = Vector2(2, -6.75)
 sprite_frames = ExtResource("1_iwmh4")
 animation = &"Idle"
 autoplay = "Idle"
-frame_progress = 0.514809
+frame_progress = 0.44221
