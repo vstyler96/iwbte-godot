@@ -1,0 +1,75 @@
+[gd_scene load_steps=5 format=3 uid="uid://dnaramm025h0t"]
+
+[ext_resource type="Script" path="res://Scripts/Menu/LoadSavedGame.gd" id="1_0l0k6"]
+[ext_resource type="Theme" uid="uid://bqdflqrhvjq6v" path="res://Rooms/Menu/UI/UI.tres" id="2_vu3ru"]
+[ext_resource type="Texture2D" uid="uid://c6sc1rk3sw553" path="res://Fonts/icons/arrow-left-circle.svg" id="3_kc7dq"]
+[ext_resource type="FontFile" uid="uid://ds88wacg6xix4" path="res://Fonts/GenericMobileSystemNuevo.ttf" id="3_um58b"]
+
+[node name="LoadSavedGame" type="Node2D"]
+script = ExtResource("1_0l0k6")
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="TopMenu" type="Control" parent="CanvasLayer"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer/TopMenu"]
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_left = 96.0
+offset_top = 32.0
+offset_right = -96.0
+offset_bottom = 76.0
+grow_horizontal = 2
+
+[node name="Button" type="Button" parent="CanvasLayer/TopMenu/HBoxContainer"]
+layout_mode = 2
+theme = ExtResource("2_vu3ru")
+theme_override_constants/h_separation = 10
+text = "Regresar"
+icon = ExtResource("3_kc7dq")
+
+[node name="CenterMenu" type="Control" parent="CanvasLayer"]
+layout_mode = 3
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -20.0
+offset_top = -20.0
+offset_right = 20.0
+offset_bottom = 20.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/CenterMenu"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -197.0
+offset_top = -27.0
+offset_right = 197.0
+offset_bottom = 27.0
+grow_horizontal = 2
+grow_vertical = 2
+alignment = 1
+
+[node name="Title" type="Label" parent="CanvasLayer/CenterMenu/VBoxContainer"]
+layout_mode = 2
+theme = ExtResource("2_vu3ru")
+theme_override_fonts/font = ExtResource("3_um58b")
+theme_override_font_sizes/font_size = 50
+text = "Select a saved game:"
+
+[connection signal="mouse_entered" from="CanvasLayer/TopMenu/HBoxContainer/Button" to="." method="_on_button_mouse_entered"]
+[connection signal="pressed" from="CanvasLayer/TopMenu/HBoxContainer/Button" to="." method="_on_button_pressed"]

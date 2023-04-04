@@ -1,0 +1,29 @@
+[gd_scene load_steps=4 format=3 uid="uid://bucfi5rpaege1"]
+
+[ext_resource type="PackedScene" uid="uid://cj623fc70l5jd" path="res://Rooms/Menu/HUD.tscn" id="1_aj5lx"]
+[ext_resource type="PackedScene" uid="uid://w5hdjh88a5di" path="res://Objects/Player.tscn" id="1_le83s"]
+[ext_resource type="TileSet" uid="uid://d2h1x3sacqehy" path="res://Rooms/Tilesets/CommonTileset.tres" id="2_2h5fv"]
+
+[node name="roomStart" type="Node2D"]
+metadata/_edit_vertical_guides_ = [640.0]
+metadata/_edit_horizontal_guides_ = [320.0]
+
+[node name="Player" parent="." instance=ExtResource("1_le83s")]
+position = Vector2(270, 239)
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+follow_viewport_enabled = true
+
+[node name="TileMap" type="TileMap" parent="CanvasLayer"]
+position = Vector2(640, 320)
+tile_set = ExtResource("2_2h5fv")
+format = 2
+layer_0/tile_data = PackedInt32Array(-65551, 0, 0, -65550, 0, 0, -65549, 0, 0, -65548, 0, 0, -65547, 0, 0, -65546, 0, 0, -65545, 0, 0, -15, 65536, 0, 65521, 65536, 0, 131057, 65536, 0, 196593, 65536, 0, 262129, 65536, 0, 327665, 65536, 0, -9, 65536, 0, -10, 65536, 0, -11, 65536, 0, -12, 65536, 0, -13, 65536, 0, -14, 65536, 0, 65522, 65536, 0, 131058, 65536, 0, 196594, 65536, 0, 262130, 65536, 0, 327666, 65536, 0, 65523, 65536, 0, 131059, 65536, 0, 196595, 65536, 0, 262131, 65536, 0, 327667, 65536, 0, 65524, 65536, 0, 131060, 65536, 0, 196596, 65536, 0, 262132, 65536, 0, 327668, 65536, 0, 65525, 65536, 0, 131061, 65536, 0, 196597, 65536, 0, 262133, 65536, 0, 327669, 65536, 0, 65526, 65536, 0, 131062, 65536, 0, 196598, 65536, 0, 262134, 65536, 0, 327670, 65536, 0, 65527, 65536, 0, 131063, 65536, 0, 196599, 65536, 0, 262135, 65536, 0, 327671, 65536, 0, 65528, 65536, 0, 131064, 65536, 0, 196600, 65536, 0, 262136, 65536, 0, 327672, 65536, 0, 65529, 65536, 0, 131065, 65536, 0, 196601, 65536, 0, 262137, 65536, 0, 327673, 65536, 0, 65530, 65536, 0, 131066, 65536, 0, 196602, 65536, 0, 262138, 65536, 0, 327674, 65536, 0, 65531, 65536, 0, 131067, 65536, 0, 196603, 65536, 0, 262139, 65536, 0, 327675, 65536, 0, 65532, 65536, 0, 131068, 65536, 0, 196604, 65536, 0, 262140, 65536, 0, 327676, 65536, 0, 65533, 65536, 0, 131069, 65536, 0, 196605, 65536, 0, 262141, 65536, 0, 327677, 65536, 0, -8, 0, 0, -7, 0, 0, -6, 0, 0, -5, 0, 0, -4, 0, 0, -3, 0, 0, -1, 0, 0, -65534, 0, 0, -65529, 0, 0, -196603, 2, 0)
+
+[node name="HUD" parent="CanvasLayer" instance=ExtResource("1_aj5lx")]
+anchors_preset = 10
+anchor_bottom = 0.0
+offset_left = 64.0
+offset_right = -64.0
+offset_bottom = 100.0
+grow_vertical = 1

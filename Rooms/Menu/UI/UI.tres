@@ -1,0 +1,14 @@
+[gd_resource type="Theme" load_steps=5 format=3 uid="uid://bqdflqrhvjq6v"]
+
+[ext_resource type="FontFile" uid="uid://lxv56aieh1v1" path="res://Fonts/GenericMobileSystem.ttf" id="1_1i4vs"]
+[ext_resource type="StyleBox" uid="uid://o6kgukl1721j" path="res://Rooms/Menu/UI/ButtonTheme.tres" id="2_qpklu"]
+[ext_resource type="StyleBox" uid="uid://boxx4gqjax18x" path="res://Rooms/Menu/UI/ButtonThemeHover.tres" id="3_mqrnw"]
+[ext_resource type="StyleBox" uid="uid://b4rkmdpnmi878" path="res://Rooms/Menu/UI/ButtonThemePressed.tres" id="4_iajwg"]
+
+[resource]
+Button/font_sizes/font_size = 20
+Button/fonts/font = ExtResource("1_1i4vs")
+Button/styles/focus = ExtResource("2_qpklu")
+Button/styles/hover = ExtResource("3_mqrnw")
+Button/styles/normal = ExtResource("2_qpklu")
+Button/styles/pressed = ExtResource("4_iajwg")

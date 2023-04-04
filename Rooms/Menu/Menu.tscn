@@ -1,0 +1,68 @@
+[gd_scene load_steps=5 format=3 uid="uid://bnqc52wvtsr1i"]
+
+[ext_resource type="Theme" uid="uid://bqdflqrhvjq6v" path="res://Rooms/Menu/UI/UI.tres" id="1_btnrp"]
+[ext_resource type="Script" path="res://Scripts/Menu/MenuController.gd" id="1_s27il"]
+[ext_resource type="AudioStream" uid="uid://bnycwcqdqk0nc" path="res://Sounds/track01.mp3" id="2_b5o58"]
+[ext_resource type="FontFile" uid="uid://ds88wacg6xix4" path="res://Fonts/GenericMobileSystemNuevo.ttf" id="3_a2yqa"]
+
+[node name="Menu" type="Control"]
+layout_direction = 1
+layout_mode = 3
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+script = ExtResource("1_s27il")
+
+[node name="Buttons" type="VBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -48.0
+offset_top = -58.0
+offset_right = 48.0
+offset_bottom = 58.0
+grow_horizontal = 2
+grow_vertical = 2
+metadata/_edit_use_anchors_ = true
+
+[node name="Title" type="Label" parent="Buttons"]
+layout_mode = 2
+theme = ExtResource("1_btnrp")
+theme_override_fonts/font = ExtResource("3_a2yqa")
+theme_override_font_sizes/font_size = 50
+text = "I Wanna Fall Into Oblivion!"
+horizontal_alignment = 1
+
+[node name="NewGame" type="Button" parent="Buttons"]
+layout_mode = 2
+theme = ExtResource("1_btnrp")
+text = "New  Game"
+
+[node name="LoadGame" type="Button" parent="Buttons"]
+layout_mode = 2
+theme = ExtResource("1_btnrp")
+text = "Load Game"
+
+[node name="Settings" type="Button" parent="Buttons"]
+layout_mode = 2
+theme = ExtResource("1_btnrp")
+text = "Settings"
+
+[node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("2_b5o58")
+
+[connection signal="mouse_entered" from="Buttons/NewGame" to="." method="_on_button_mouse_entered"]
+[connection signal="pressed" from="Buttons/NewGame" to="." method="_on_new_game_pressed"]
+[connection signal="mouse_entered" from="Buttons/LoadGame" to="." method="_on_button_mouse_entered"]
+[connection signal="pressed" from="Buttons/LoadGame" to="." method="_on_load_game_pressed"]
+[connection signal="mouse_entered" from="Buttons/Settings" to="." method="_on_button_mouse_entered"]
+[connection signal="pressed" from="Buttons/Settings" to="." method="_on_settings_pressed"]
