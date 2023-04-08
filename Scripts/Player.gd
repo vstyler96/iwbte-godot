@@ -1,58 +1,50 @@
 extends CharacterBody2D
 
-@export var SPEED: float = 250
-@export var GRAVITY = 1000
-@export var JUMP: float = 20
+const SPEED = 200.0
+const JUMP_VELOCITY = -400.0
 
-@onready var Env = $"/root/Env"
+# Get the gravity from the project settings to be synced with RigidBody nodes.
+var gravity = ProjectSettings.get_setting("physics/2d/default_gravity")
+var secondJump: bool = false
+var jumpAnimationLoops: int = 0
 
-var jumpAnimation: int = false
-var jumpsAllowed: int = 0;
-
-func _ready():
-  pass
-  # var settings = Env.current_settings.position
-  # self.global_position = Vector2(settings[0], settings[1])
-
-func _process(delta):
-  if not is_on_floor():
-    velocity.y += GRAVITY * delta
+func _process(_delta):
+  if $Sprite.animation_looped and jumpAnimationLoops > 0:
+    jumpAnimationLoops -= 1
 
 func _physics_process(delta):
-  var left = Input.is_action_pressed("move_left")
-  var right = Input.is_action_pressed("move_right")
-  var jump = Input.is_action_just_pressed("move_jump")
+  var jump = Input.is_action_just_pressed("ui_accept");
 
-  move_and_slide()
+  if not is_on_floor():
+    if jumpAnimationLoops > 0:
+      $Sprite.animation = "Jump"
+    else:
+      $Sprite.animation = "Fall"
 
-  if $Sprite.animation_looped:
-    jumpAnimation -= 1
+    velocity.y += gravity * delta
 
-  if jumpsAllowed > 0 && jump:
-    jumpsAllowed -= 1
-    jumpAnimation = 10
-    apply_jump(delta)
+    if secondJump and jump:
+      jumpAnimationLoops = 25
+      secondJump = false
+      velocity.y = JUMP_VELOCITY * 3/4
 
-  if left || right:
+  # Handle Jump.
+  if jump and is_on_floor():
+    jumpAnimationLoops = 25
+    secondJump = true
+    velocity.y = JUMP_VELOCITY
+
+  # Get the input direction and handle the movement/deceleration.
+  # As good practice, you should replace UI actions with custom gameplay actions.
+  var direction = Input.get_axis("ui_left", "ui_right")
+  if direction:
+    $Sprite.flip_h = true if direction < 0 else false
     if is_on_floor():
       $Sprite.animation = "Walk"
-    $Sprite.flip_h = left
-    move(delta, left, right)
-
-  if !left && !right:
-    velocity.x = 0
-
+    velocity.x = direction * SPEED
+  else:
     if is_on_floor():
-      jumpsAllowed = 2
       $Sprite.animation = "Idle"
-    else:
-      $Sprite.animation = "Jump"
-      if jumpAnimation < 1:
-        $Sprite.animation = "Fall"
+    velocity.x = move_toward(velocity.x, 0, SPEED)
 
-func move(delta, left, right):
-  var direction = int(right) - int(left)
-  velocity.x += direction * SPEED * delta
-
-func apply_jump(delta):
-  velocity.y = -JUMP * GRAVITY * delta
+  move_and_slide()

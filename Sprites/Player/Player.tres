@@ -93,27 +93,6 @@ animations = [{
 }, {
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_pi4bj")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_t0gc1")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_pi4bj")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_t0gc1")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_pi4bj")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_t0gc1")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_pi4bj")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_t0gc1")
 }],
 "loop": true,
 "name": &"Jump",

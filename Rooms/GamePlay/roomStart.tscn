@@ -225,7 +225,7 @@ metadata/_edit_vertical_guides_ = [640.0]
 metadata/_edit_horizontal_guides_ = [320.0]
 
 [node name="Player" parent="." instance=ExtResource("1_le83s")]
-position = Vector2(256, 320)
+position = Vector2(192, 352)
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 follow_viewport_enabled = true

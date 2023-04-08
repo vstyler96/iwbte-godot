@@ -17,6 +17,5 @@ debug_color = Color(0.168627, 0.6, 0.658824, 0.419608)
 
 [node name="Sprite" type="AnimatedSprite2D" parent="."]
 sprite_frames = ExtResource("1_iwmh4")
-animation = &"Idle"
+animation = &"Jump"
 autoplay = "Idle"
-frame_progress = 0.217376
