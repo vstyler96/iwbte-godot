@@ -17,5 +17,7 @@ debug_color = Color(0.168627, 0.6, 0.658824, 0.419608)
 
 [node name="Sprite" type="AnimatedSprite2D" parent="."]
 sprite_frames = ExtResource("1_iwmh4")
-animation = &"Jump"
+animation = &"Idle"
 autoplay = "Idle"
+
+[node name="Audio" type="AudioStreamPlayer2D" parent="."]

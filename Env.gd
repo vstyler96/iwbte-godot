@@ -37,7 +37,7 @@ func create() -> void:
   Env.settings.slots[Env.current_slot] = {
     "name": defaultName % str(Time.get_date_string_from_unix_time(int(Env.current_slot))),
     "room": "roomStart",
-    "position": [270,239],
+    "position": [192,352],
     "items": [],
     "defeated": {
       "loneliness": false,
