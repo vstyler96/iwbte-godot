@@ -2,7 +2,7 @@ extends Node
 
 var defaultFileName = "user://IWFIO.json"
 var settings: Dictionary
-var current_slot: int
+var current_slot: String
 @onready var current_settings: Dictionary:
   get:
     return settings.slots[current_slot]
@@ -31,12 +31,13 @@ func read() -> Dictionary:
   return content
 
 func create() -> void:
-  Env.current_slot = Time.get_unix_time_from_system()
+  Env.current_slot = str(Time.get_unix_time_from_system())
   var defaultName = "Embrace Darkness (%s)"
 
   Env.settings.slots[Env.current_slot] = {
-    "name": defaultName % Time.get_date_string_from_unix_time(Env.current_slot),
+    "name": defaultName % str(Time.get_date_string_from_unix_time(int(Env.current_slot))),
     "room": "roomStart",
+    "position": [270,239],
     "items": [],
     "defeated": {
       "loneliness": false,
@@ -55,4 +56,4 @@ func find(timestamp: int) -> void:
   if !Env.settings.slots[timestamp]:
     create()
     return
-  Env.current_slot = timestamp
+  Env.current_slot = str(timestamp)
