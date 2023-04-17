@@ -1,11 +1,22 @@
 extends CharacterBody2D
 
-const SPEED = 200.0
-const JUMP_VELOCITY = -400.0
+# signal on_death()
 
-var gravity = ProjectSettings.get_setting("physics/2d/default_gravity")
-var secondJump: bool = false
-var jumpAnimationLoops: int = 0
+@onready var Death = $OnDeath
+@onready var Bullet = preload("res://Objects/Bullet.res")
+@onready var BulletSound = $SoundFX
+@onready var Blood = preload("res://Objects/Player/Blood.tscn")
+@onready var MainCollider = $CollisionShape2D
+@onready var ThreatCollider = $ThreatController/CollisionShape2D
+
+const GRAVITY = 980 # ProjectSettings.get_setting("physics/2d/default_gravity")
+const VSPEED = 400
+const HSPEED = 140
+
+const JUMP_FORCE = 400
+const DJUMP_FORCE = 330
+var d_jump: bool = true
+var on_water: bool = false
 
 func _ready():
   randomize()
@@ -14,68 +25,112 @@ func _ready():
     Env.current_settings.position[1]
   )
 
-func _process(_delta):
-  if $Sprite.animation_looped and jumpAnimationLoops > 0:
-    jumpAnimationLoops -= 1
+func _process(delta):
+  if Input.is_action_just_pressed("ui_restart"):
+    Env.dead = false
+    get_tree().reload_current_scene()
+    _toggle_colliders(true)
 
 func _physics_process(delta):
-  var jump = Input.is_action_just_pressed("move_jump");
+  if Env.dead || Env.paused: return
+  var jump = Input.is_action_pressed("move_jump");
+  if !is_on_floor():
+    velocity.y += GRAVITY * delta
+    velocity.y = min(VSPEED, velocity.y)
 
-  if not is_on_floor():
-    if jumpAnimationLoops > 0:
-      $Sprite.animation = "Jump"
-    else:
-      $Sprite.animation = "Fall"
+  var direction = int(Input.get_axis("move_left", "move_right"))
+  match direction:
+      -1, 1:
+        velocity.x = direction * HSPEED
+        $Sprite.flip_h = direction < 0;
+      0:
+        velocity.x = move_toward(velocity.x, 0, HSPEED)
 
-    velocity.y += gravity * delta
-
-    if secondJump and jump:
-      jumpAnimationLoops = 25
-      secondJump = false
-      velocity.y = JUMP_VELOCITY * 3/4
-
-  if jump and is_on_floor():
-    jumpAnimationLoops = 25
-    secondJump = true
-    velocity.y = JUMP_VELOCITY
-
-  var direction = Input.get_axis("move_left", "move_right")
-  if direction:
-    $Sprite.flip_h = true if direction < 0 else false
-    if is_on_floor():
-      $Sprite.animation = "Walk"
-    velocity.x = direction * SPEED
-  else:
-    if is_on_floor():
-      $Sprite.animation = "Idle"
-    velocity.x = move_toward(velocity.x, 0, SPEED)
-
+  handle_animations()
+  handle_jump()
+  handle_shooting()
   move_and_slide()
 
-func killPlayer():
-  startBlood()
-  $Audio.stream = preload("res://Sounds/OnDeath.mp3")
-  $Audio.play()
-  visible = false;
+"""
+----------------------------
+| Multiple handlers
+----------------------------
+| Here we will handle all of the animations.
+|
+"""
+func handle_animations():
+  if !is_on_floor():
+    if velocity.y > 0:
+      $Sprite.play("Fall")
+      return
+    $Sprite.play("Jump")
+    return
 
-func startBlood():
-  var sprite = Sprite2D.new()
-  var collision = CollisionShape2D.new()
-  var rect2D = RectangleShape2D.new()
+  if velocity.x == 0:
+    $Sprite.play("Idle")
+    return
 
-  sprite.texture = preload("res://Sprites/Player/Addons/blood.png")
-  sprite.hframes = 3;
-  sprite.frame = randi_range(0, 2)
-  rect2D.size = Vector2(2, 2)
-  collision.shape = rect2D
+  $Sprite.play("Walk")
 
-  var radians = 3.1416 / 180
+func handle_jump():
+  d_jump = true
 
-  for i in 359:
-    var rigid = RigidBody2D.new()
-    rigid.add_child(sprite)
-    rigid.add_child(collision)
-    get_parent().add_child(rigid)
-    rigid.global_position = global_position
-    print(Vector2.from_angle(i * radians) * 500)
-    rigid.apply_central_impulse(Vector2.from_angle(i * radians) * 500)
+  if Input.is_action_just_pressed("move_jump"):
+    if is_on_floor():
+      velocity.y = -JUMP_FORCE
+
+    if d_jump || on_water:
+      velocity.y = -DJUMP_FORCE
+      d_jump = false
+
+func handle_shooting():
+  if Input.is_action_just_pressed("player_shoot") && visible:
+    var bullet = Bullet.instantiate()
+    var direction = -1 if $Sprite.flip_h else 1;
+    get_parent().add_child(bullet)
+    bullet.rotation *= direction
+    bullet.global_position = Vector2(
+      global_position.x + (10 * direction),
+      global_position.y + 2
+    )
+    bullet.bullet_force *= direction
+    BulletSound.play()
+
+
+"""
+----------------------------
+| Kill Player
+----------------------------
+| Here we handle the kill_player settings and execution
+|
+"""
+
+func kill_player():
+  _toggle_colliders(false)
+  emit_blood()
+  MainCollider
+  Death.play()
+  visible = false
+  Env.dead = true
+
+func emit_blood():
+  for i in 36:
+    var blood = Blood.instantiate()
+    blood.global_position = global_position
+    get_parent().add_child(blood)
+    blood.linear_velocity = Vector2.from_angle(i * 10) * 1200
+
+func _toggle_colliders(enable):
+  ThreatCollider.disabled = enable
+  MainCollider.disabled = enable
+
+"""
+----------------------------
+| Signals callbacks
+----------------------------
+| Here we handle the signals callbacks
+|
+"""
+
+func _on_threat_controller_area_or_body_entered(area):
+  kill_player()

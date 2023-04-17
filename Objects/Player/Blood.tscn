@@ -1,0 +1,16 @@
+[gd_scene load_steps=3 format=3 uid="uid://dn0fycd8p5bcr"]
+
+[ext_resource type="Texture2D" uid="uid://uuwj2wkytubj" path="res://Sprites/Player/Addons/blood.png" id="1_oej7m"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_no0cy"]
+size = Vector2(2, 2)
+
+[node name="Blood" type="RigidBody2D"]
+gravity_scale = 0.36
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_no0cy")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("1_oej7m")
+hframes = 3

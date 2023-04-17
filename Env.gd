@@ -10,8 +10,15 @@ var current_slot: String
     settings.slots[current_slot] = value
     save()
 
+var paused: bool = false
+var dead: bool = false
+
 func _ready():
   settings = read()
+
+func _process(_delta):
+  if Input.is_action_just_pressed("ui_main_menu"):
+    get_tree().change_scene_to_file("res://Rooms/Menu/Menu.tscn")
 
 func save() -> void:
   var file: FileAccess = FileAccess.open(defaultFileName, FileAccess.WRITE)

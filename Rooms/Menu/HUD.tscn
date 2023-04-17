@@ -1,8 +1,9 @@
-[gd_scene load_steps=4 format=3 uid="uid://cj623fc70l5jd"]
+[gd_scene load_steps=5 format=3 uid="uid://cj623fc70l5jd"]
 
 [ext_resource type="Theme" uid="uid://bqdflqrhvjq6v" path="res://Rooms/Menu/UI/UI.tres" id="1_dvmp3"]
 [ext_resource type="Script" path="res://Scripts/Menu/HUD.gd" id="1_tdiyy"]
 [ext_resource type="Texture2D" uid="uid://pnkw73ysoefj" path="res://Fonts/icons/pause-circle.svg" id="2_0ebh1"]
+[ext_resource type="Texture2D" uid="uid://m7o2og2is224" path="res://Sprites/gameOver.png" id="4_og7yl"]
 
 [node name="HUD" type="Control"]
 layout_mode = 3
@@ -31,4 +32,10 @@ theme_override_constants/h_separation = 10
 text = "Pause"
 icon = ExtResource("2_0ebh1")
 
+[node name="GameOver" type="Sprite2D" parent="."]
+visible = false
+position = Vector2(640, 360)
+texture = ExtResource("4_og7yl")
+
 [connection signal="mouse_entered" from="HBoxContainer/Button" to="." method="_on_button_mouse_entered"]
+[connection signal="pressed" from="HBoxContainer/Button" to="." method="_on_button_pressed"]
