@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=3 uid="uid://cnaxann74rnk3"]
+[gd_scene load_steps=12 format=3 uid="uid://cnaxann74rnk3"]
 
 [ext_resource type="PackedScene" uid="uid://cj623fc70l5jd" path="res://Rooms/Menu/HUD.tscn" id="1_aj5lx"]
 [ext_resource type="PackedScene" uid="uid://w5hdjh88a5di" path="res://Objects/Player/Player.tscn" id="1_le83s"]
@@ -6,6 +6,7 @@
 [ext_resource type="Texture2D" uid="uid://cbenjlrx4yxg1" path="res://Sprites/Tiles/tilesHw.png" id="3_chilf"]
 [ext_resource type="Texture2D" uid="uid://nle8kurhd2o" path="res://Sprites/Tiles/tilesXmas.png" id="4_eb1sj"]
 [ext_resource type="PackedScene" uid="uid://nftjyx2ctr4c" path="res://Objects/Spike.tscn" id="6_cpem2"]
+[ext_resource type="PackedScene" uid="uid://cs5edf4quvvap" path="res://Objects/Save.res" id="7_17bln"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_4061m"]
 resource_name = "CommonBlocks"
@@ -228,22 +229,11 @@ metadata/_edit_horizontal_guides_ = [320.0]
 [node name="Player" parent="." instance=ExtResource("1_le83s")]
 position = Vector2(192, 352)
 
-[node name="CanvasLayer" type="CanvasLayer" parent="."]
-follow_viewport_enabled = true
-
-[node name="TileMap" type="TileMap" parent="CanvasLayer"]
+[node name="TileMap" type="TileMap" parent="."]
 position = Vector2(640, 320)
 tile_set = SubResource("TileSet_803mb")
 format = 2
-layer_0/tile_data = PackedInt32Array(196596, 0, 0, 196597, 0, 0, 196598, 0, 0, 196599, 0, 0, 196600, 0, 0, 196601, 0, 0, 262137, 65536, 0, 327673, 65536, 0, 393209, 65536, 0, 458745, 65536, 0, 524281, 65536, 0, 589817, 65536, 0, 655353, 65536, 0, 720889, 65536, 0, 720890, 0, 0, 720891, 0, 0, 720892, 0, 0, 720893, 0, 0, 720894, 0, 0, 720895, 0, 0, 655360, 0, 0, 655361, 65536, 0, 655364, 65536, 0, 655365, 0, 0, 589825, 0, 0, 589826, 0, 0, 589827, 0, 0, 589828, 0, 0, 655366, 0, 0, 655367, 0, 0, 655368, 0, 0, 655369, 0, 0, 655370, 0, 0, 655371, 0, 0, 655372, 0, 0, 655373, 0, 0, 655374, 0, 0, 655375, 0, 0, 655376, 0, 0, 655377, 0, 0, 262145, 65536, 3, 262148, 65536, 3, 262146, 0, 3, 262147, 0, 3, 524285, 196608, 2, 524284, 196608, 2, 458748, 196608, 2, 458749, 196608, 2, 7, 131072, 3, 8, 131072, 3, 9, 131072, 3, 10, 131072, 3, 11, 131072, 3, 12, 131072, 3, 65543, 196608, 3, 131079, 196608, 3, 196615, 196608, 3, 262151, 196608, 3, 327687, 196608, 3, 655378, 0, 0, 655379, 65536, 0, 589843, 65536, 0, 524307, 65536, 0, 458771, 65536, 0, 393235, 65536, 0, 65555, 65536, 0, 19, 65536, 0, 196627, 65536, 0, 262163, 65536, 0, 131091, 65536, 0, 327699, 65536, 0, -65517, 65536, 0, -393197, 65536, 0, -458733, 65536, 0, -524269, 65536, 0, -589805, 65536, 0, -655341, 65536, 0, -327661, 65536, 0, -262125, 65536, 0, -196589, 65536, 0, -131053, 65536, 0, 327688, 196608, 3, 327689, 196608, 3, 327690, 196608, 3, 327691, 196608, 3, 327692, 196608, 3, 262156, 196608, 3, 196620, 196608, 3, 131084, 196608, 3, 65548, 196608, 3, 458740, 0, 0, 458741, 0, 0, 458742, 0, 0, 458743, 0, 0, 196594, 0, 0, 196595, 0, 0, 196593, 0, 0, 655346, 0, 0, 655344, 0, 0, 851952, 0, 0, 851951, 0, 0, 851950, 0, 0, 851949, 0, 0, 851948, 65536, 0, 786412, 65536, 0, 720876, 65536, 0, 655340, 65536, 0, 589804, 65536, 0, 524268, 65536, 0, 458732, 65536, 0, 393196, 65536, 0, 327660, 65536, 0, 262124, 65536, 0, 196588, 65536, 0, 131052, 65536, 0, 65516, 65536, 0, -20, 65536, 0, -65556, 65536, 0, -131092, 65536, 0, -196628, 65536, 0, -262164, 65536, 0, -327700, 65536, 0, -393236, 65536, 0, -458772, 65536, 0, -524308, 65536, 0, -589844, 65536, 0)
-
-[node name="HUD" parent="CanvasLayer" instance=ExtResource("1_aj5lx")]
-anchors_preset = 10
-anchor_bottom = 0.0
-offset_left = 64.0
-offset_right = -64.0
-offset_bottom = 100.0
-grow_vertical = 1
+layer_0/tile_data = PackedInt32Array(196596, 0, 0, 196597, 0, 0, 196598, 0, 0, 196599, 0, 0, 196600, 0, 0, 196601, 0, 0, 262137, 65536, 0, 327673, 65536, 0, 393209, 65536, 0, 458745, 65536, 0, 524281, 65536, 0, 589817, 65536, 0, 655353, 65536, 0, 720889, 65536, 0, 589825, 0, 0, 589826, 0, 0, 589827, 0, 0, 589828, 0, 0, 655370, 0, 0, 655371, 0, 0, 655372, 0, 0, 655373, 0, 0, 655374, 0, 0, 655375, 0, 0, 655376, 0, 0, 655377, 0, 0, 262145, 65536, 3, 262148, 65536, 3, 262146, 0, 3, 262147, 0, 3, 524285, 196608, 2, 524284, 196608, 2, 458748, 196608, 2, 458749, 196608, 2, 7, 131072, 3, 8, 131072, 3, 9, 131072, 3, 10, 131072, 3, 11, 131072, 3, 12, 131072, 3, 65543, 196608, 3, 131079, 196608, 3, 196615, 196608, 3, 262151, 196608, 3, 327687, 196608, 3, 655378, 0, 0, 655379, 65536, 0, 589843, 65536, 0, 524307, 65536, 0, 458771, 65536, 0, 393235, 65536, 0, 65555, 65536, 0, 19, 65536, 0, 196627, 65536, 0, 262163, 65536, 0, 131091, 65536, 0, 327699, 65536, 0, -65517, 65536, 0, -393197, 65536, 0, -458733, 65536, 0, -524269, 65536, 0, -589805, 65536, 0, -655341, 65536, 0, -327661, 65536, 0, -262125, 65536, 0, -196589, 65536, 0, -131053, 65536, 0, 327688, 196608, 3, 327689, 196608, 3, 327690, 196608, 3, 327691, 196608, 3, 327692, 196608, 3, 131084, 196608, 3, 65548, 196608, 3, 458740, 0, 0, 458741, 0, 0, 458742, 0, 0, 458743, 0, 0, 196594, 0, 0, 196595, 0, 0, 196593, 0, 0, 655346, 0, 0, 655344, 0, 0, 851952, 0, 0, 851951, 0, 0, 851950, 0, 0, 851949, 0, 0, 851948, 65536, 0, 786412, 65536, 0, 720876, 65536, 0, 655340, 65536, 0, 589804, 65536, 0, 524268, 65536, 0, 458732, 65536, 0, 393196, 65536, 0, 327660, 65536, 0, 262124, 65536, 0, 196588, 65536, 0, 131052, 65536, 0, 65516, 65536, 0, -20, 65536, 0, -65556, 65536, 0, -131092, 65536, 0, -196628, 65536, 0, -262164, 65536, 0, -327700, 65536, 0, -393236, 65536, 0, -458772, 65536, 0, -524308, 65536, 0, -589844, 65536, 0, -589843, 65536, 0, -589842, 65536, 0, -589841, 65536, 0, -589840, 65536, 0, -589839, 65536, 0, -589838, 65536, 0, -589837, 65536, 0, -589836, 65536, 0, -589835, 65536, 0, -589834, 65536, 0, -589833, 65536, 0, -589832, 65536, 0, -589831, 65536, 0, -589830, 65536, 0, -589829, 65536, 0, -589828, 65536, 0, -589827, 65536, 0, -589826, 65536, 0, -589825, 65536, 0, -655360, 65536, 0, -655359, 65536, 0, -655358, 65536, 0, -655357, 65536, 0, -655356, 65536, 0, -655355, 65536, 0, -655354, 65536, 0, -655342, 65536, 0, -655353, 65536, 0, -655343, 65536, 0, -655344, 65536, 0, -655345, 65536, 0, -655346, 65536, 0, -655347, 65536, 0, -655348, 65536, 0, -655349, 65536, 0, -655350, 65536, 0, -655351, 65536, 0, -655352, 65536, 0, 851953, 0, 0, 851954, 0, 0, 851955, 0, 0, 851956, 0, 0, 851957, 0, 0, 851958, 0, 0, 851959, 0, 0, 851960, 0, 0, 786425, 65536, 0, 851961, 65536, 0, -65538, 0, 0, -65537, 0, 0, -131072, 0, 0, -131071, 0, 0, -131070, 0, 0, -131069, 0, 0, 327693, 196608, 3, 327694, 196608, 3, 327695, 196608, 3, 720903, 196608, 3, 720902, 196608, 3)
 
 [node name="Threats" type="Node2D" parent="."]
 
@@ -251,6 +241,9 @@ grow_vertical = 1
 
 [node name="Spike" parent="Spikes" instance=ExtResource("6_cpem2")]
 position = Vector2(240, 368)
+
+[node name="Spike14" parent="Spikes" instance=ExtResource("6_cpem2")]
+position = Vector2(144, 592)
 
 [node name="Spike2" parent="Spikes" instance=ExtResource("6_cpem2")]
 position = Vector2(272, 368)
@@ -264,6 +257,87 @@ position = Vector2(336, 368)
 [node name="Spike5" parent="Spikes" instance=ExtResource("6_cpem2")]
 position = Vector2(368, 368)
 
+[node name="Spike13" parent="Spikes" instance=ExtResource("6_cpem2")]
+position = Vector2(304, 496)
+
 [node name="Spike6" parent="Spikes" instance=ExtResource("6_cpem2")]
 position = Vector2(464, 400)
 rotation = 1.5708
+
+[node name="Spike7" parent="Spikes" instance=ExtResource("6_cpem2")]
+position = Vector2(464, 432)
+rotation = 1.5708
+
+[node name="Spike8" parent="Spikes" instance=ExtResource("6_cpem2")]
+position = Vector2(688, 432)
+
+[node name="Spike9" parent="Spikes" instance=ExtResource("6_cpem2")]
+position = Vector2(784, 432)
+
+[node name="Spike10" parent="Spikes" instance=ExtResource("6_cpem2")]
+position = Vector2(688, 496)
+rotation = 3.14159
+
+[node name="Spike11" parent="Spikes" instance=ExtResource("6_cpem2")]
+position = Vector2(784, 496)
+rotation = 3.14159
+
+[node name="Spike12" parent="Spikes" instance=ExtResource("6_cpem2")]
+position = Vector2(592, 304)
+rotation = 3.14159
+
+[node name="Spike17" parent="Spikes" instance=ExtResource("6_cpem2")]
+position = Vector2(1136, 528)
+rotation = 3.14159
+
+[node name="Spike18" parent="Spikes" instance=ExtResource("6_cpem2")]
+position = Vector2(1104, 528)
+rotation = 3.14159
+
+[node name="Spike19" parent="Spikes" instance=ExtResource("6_cpem2")]
+position = Vector2(1072, 528)
+rotation = 3.14159
+
+[node name="Spike20" parent="Spikes" instance=ExtResource("6_cpem2")]
+position = Vector2(1040, 432)
+rotation = 3.14159
+
+[node name="Spike21" parent="Spikes" instance=ExtResource("6_cpem2")]
+position = Vector2(688, 656)
+rotation = 3.14159
+
+[node name="Spike22" parent="Spikes" instance=ExtResource("6_cpem2")]
+position = Vector2(720, 656)
+rotation = 3.14159
+
+[node name="Spike23" parent="Spikes" instance=ExtResource("6_cpem2")]
+position = Vector2(752, 656)
+rotation = 3.14159
+
+[node name="Spike24" parent="Spikes" instance=ExtResource("6_cpem2")]
+position = Vector2(784, 656)
+rotation = 3.14159
+
+[node name="Spike15" parent="Spikes" instance=ExtResource("6_cpem2")]
+position = Vector2(528, 592)
+rotation = 3.14159
+
+[node name="Spike16" parent="Spikes" instance=ExtResource("6_cpem2")]
+position = Vector2(528, 592)
+rotation = 3.14159
+
+[node name="Save" parent="." instance=ExtResource("7_17bln")]
+position = Vector2(432, 368)
+
+[node name="HUD" parent="." instance=ExtResource("1_aj5lx")]
+clip_contents = true
+custom_minimum_size = Vector2(1280, 720)
+anchors_preset = 0
+anchor_right = 0.0
+anchor_bottom = 0.0
+offset_right = 1280.0
+offset_bottom = 720.0
+grow_horizontal = 1
+grow_vertical = 1
+
+[connection signal="save_game" from="Save" to="Player" method="_on_save_save_game"]

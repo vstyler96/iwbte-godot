@@ -1,4 +1,5 @@
 extends AnimatableBody2D
+class_name Bullet
 
 @export var bullet_force: Vector2 = Vector2(15, 0)
 

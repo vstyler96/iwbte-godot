@@ -18,7 +18,8 @@ func _on_button_mouse_entered():
   add_child(audio)
   audio.play()
 
-func _on_button_pressed():
-  Env.paused = !Env.paused
-  PauseButton.text = "Resume" if Env.paused else "Pause"
-  PauseButton.icon = preload("res://Fonts/icons/pause-circle.svg") if Env.paused else preload("res://Fonts/icons/play-circle.svg")
+func _on_button_toggled(pressed):
+  Env.paused = pressed
+  PauseButton.text = "Resume" if pressed else "Pause"
+  PauseButton.icon = preload("res://Fonts/icons/pause-circle.svg") if pressed else preload("res://Fonts/icons/play-circle.svg")
+  $PauseLabel.visible = pressed

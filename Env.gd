@@ -18,11 +18,13 @@ func _ready():
 
 func _process(_delta):
   if Input.is_action_just_pressed("ui_main_menu"):
+    Env.paused = false
+    Env.dead = false
     get_tree().change_scene_to_file("res://Rooms/Menu/Menu.tscn")
 
 func save() -> void:
   var file: FileAccess = FileAccess.open(defaultFileName, FileAccess.WRITE)
-  file.store_string(JSON.stringify(Env.settings))
+  file.store_string(JSON.stringify(Env.settings, "  "))
   file = null;
 
 func read() -> Dictionary:

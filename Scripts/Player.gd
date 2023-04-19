@@ -7,9 +7,8 @@ extends CharacterBody2D
 @onready var BulletSound = $SoundFX
 @onready var Blood = preload("res://Objects/Player/Blood.tscn")
 @onready var MainCollider = $CollisionShape2D
-@onready var ThreatCollider = $ThreatController/CollisionShape2D
 
-const GRAVITY = 980 # ProjectSettings.get_setting("physics/2d/default_gravity")
+const GRAVITY = 980
 const VSPEED = 400
 const HSPEED = 140
 
@@ -29,7 +28,8 @@ func _process(delta):
   if Input.is_action_just_pressed("ui_restart"):
     Env.dead = false
     get_tree().reload_current_scene()
-    _toggle_colliders(true)
+  if visible:
+    kill_on_out_of_bounds()
 
 func _physics_process(delta):
   if Env.dead || Env.paused: return
@@ -73,11 +73,11 @@ func handle_animations():
   $Sprite.play("Walk")
 
 func handle_jump():
-  d_jump = true
-
   if Input.is_action_just_pressed("move_jump"):
     if is_on_floor():
+      d_jump = true
       velocity.y = -JUMP_FORCE
+      return
 
     if d_jump || on_water:
       velocity.y = -DJUMP_FORCE
@@ -89,13 +89,22 @@ func handle_shooting():
     var direction = -1 if $Sprite.flip_h else 1;
     get_parent().add_child(bullet)
     bullet.rotation *= direction
+    bullet.bullet_force *= direction
     bullet.global_position = Vector2(
       global_position.x + (10 * direction),
       global_position.y + 2
     )
-    bullet.bullet_force *= direction
     BulletSound.play()
 
+func kill_on_out_of_bounds():
+  var x = global_position.x
+  var y = global_position.y
+
+  if y < 0 || y > 720:
+    kill_player()
+
+  if x < 0 || x > 1280:
+    kill_player()
 
 """
 ----------------------------
@@ -106,23 +115,20 @@ func handle_shooting():
 """
 
 func kill_player():
-  _toggle_colliders(false)
   emit_blood()
   MainCollider
   Death.play()
-  visible = false
   Env.dead = true
+  $CollisionShape2D.queue_free()
+  $ThreatController.queue_free()
+  visible = false
 
 func emit_blood():
   for i in 36:
     var blood = Blood.instantiate()
     blood.global_position = global_position
     get_parent().add_child(blood)
-    blood.linear_velocity = Vector2.from_angle(i * 10) * 1200
-
-func _toggle_colliders(enable):
-  ThreatCollider.disabled = enable
-  MainCollider.disabled = enable
+    blood.linear_velocity = Vector2.from_angle(i * 60) * 1200
 
 """
 ----------------------------
@@ -134,3 +140,9 @@ func _toggle_colliders(enable):
 
 func _on_threat_controller_area_or_body_entered(area):
   kill_player()
+
+func _on_save_save_game():
+  if visible:
+    Env.current_settings.room = get_tree().current_scene.name
+    Env.current_settings.position = [ global_position.x, global_position.y ]
+    Env.save()
