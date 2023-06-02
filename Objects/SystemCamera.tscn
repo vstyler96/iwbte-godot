@@ -1,0 +1,4 @@
+[gd_scene format=3 uid="uid://2tw1177vskg0"]
+
+[node name="SystemCamera" type="Camera2D"]
+anchor_mode = 0

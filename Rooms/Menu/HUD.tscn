@@ -1,8 +1,9 @@
-[gd_scene load_steps=7 format=3 uid="uid://cj623fc70l5jd"]
+[gd_scene load_steps=8 format=3 uid="uid://cj623fc70l5jd"]
 
 [ext_resource type="Theme" uid="uid://bqdflqrhvjq6v" path="res://Rooms/Menu/UI/UI.tres" id="1_dvmp3"]
 [ext_resource type="Script" path="res://Scripts/Menu/HUD.gd" id="1_tdiyy"]
 [ext_resource type="Texture2D" uid="uid://pnkw73ysoefj" path="res://Fonts/icons/pause-circle.svg" id="2_0ebh1"]
+[ext_resource type="Texture2D" uid="uid://dwa073wtn3nbo" path="res://Fonts/icons/view-dashboard.svg" id="4_io2ki"]
 [ext_resource type="Texture2D" uid="uid://m7o2og2is224" path="res://Sprites/gameOver.png" id="4_og7yl"]
 [ext_resource type="FontFile" uid="uid://ds88wacg6xix4" path="res://Fonts/GenericMobileSystemNuevo.ttf" id="5_bbj48"]
 
@@ -23,24 +24,36 @@ script = ExtResource("1_tdiyy")
 layout_mode = 1
 anchors_preset = 10
 anchor_right = 1.0
-offset_left = 128.0
-offset_top = 32.0
-offset_right = -96.0
-offset_bottom = 76.0
+offset_left = 64.0
+offset_right = -64.0
+offset_bottom = 64.0
 grow_horizontal = 2
-theme_override_constants/separation = 100
+theme_override_constants/separation = 25
+alignment = 2
 
-[node name="Button" type="Button" parent="HBoxContainer"]
+[node name="Pause" type="Button" parent="HBoxContainer"]
 layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
 theme = ExtResource("1_dvmp3")
 theme_override_constants/h_separation = 10
 toggle_mode = true
+keep_pressed_outside = true
 text = "Pause"
 icon = ExtResource("2_0ebh1")
 
+[node name="Menu" type="Button" parent="HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme = ExtResource("1_dvmp3")
+theme_override_constants/h_separation = 10
+text = "Main Menu"
+icon = ExtResource("4_io2ki")
+
 [node name="GameOver" type="Sprite2D" parent="."]
 visible = false
-position = Vector2(640, 360)
+position = Vector2(400, 304)
 texture = ExtResource("4_og7yl")
 
 [node name="PauseLabel" type="Label" parent="."]
@@ -63,5 +76,7 @@ horizontal_alignment = 1
 vertical_alignment = 1
 uppercase = true
 
-[connection signal="mouse_entered" from="HBoxContainer/Button" to="." method="_on_button_mouse_entered"]
-[connection signal="toggled" from="HBoxContainer/Button" to="." method="_on_button_toggled"]
+[connection signal="mouse_entered" from="HBoxContainer/Pause" to="." method="_on_button_mouse_entered"]
+[connection signal="toggled" from="HBoxContainer/Pause" to="." method="_on_pause_toggled"]
+[connection signal="mouse_entered" from="HBoxContainer/Menu" to="." method="_on_button_mouse_entered"]
+[connection signal="pressed" from="HBoxContainer/Menu" to="." method="_on_menu_pressed"]

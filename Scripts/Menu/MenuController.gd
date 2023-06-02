@@ -5,7 +5,6 @@ extends Node
 @onready var hoverSound = preload("res://Sounds/SFX/DJump.wav")
 
 func _on_new_game_pressed():
-  Env.create();
   get_tree().change_scene_to_file("res://Rooms/GamePlay/roomStart.tscn")
 
 func _on_load_game_pressed():

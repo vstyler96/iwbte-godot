@@ -1,12 +1,16 @@
 extends CharacterBody2D
+class_name Player
 
-# signal on_death()
+@onready var jumpSound = preload("res://Sounds/SFX/Jump.wav")
+@onready var dJumpSound = preload("res://Sounds/SFX/DJump.wav")
+@onready var shootSound = preload("res://Sounds/SFX/Shoot.wav")
 
 @onready var Death = $OnDeath
 @onready var Bullet = preload("res://Objects/Bullet.res")
-@onready var BulletSound = $SoundFX
 @onready var Blood = preload("res://Objects/Player/Blood.tscn")
 @onready var MainCollider = $CollisionShape2D
+
+signal position_changed
 
 const GRAVITY = 980
 const VSPEED = 400
@@ -16,40 +20,83 @@ const JUMP_FORCE = 400
 const DJUMP_FORCE = 330
 var d_jump: bool = true
 var on_water: bool = false
+var walls: int = 0
 
 func _ready():
   randomize()
-  global_position = Vector2(
-    Env.current_settings.position[0],
-    Env.current_settings.position[1]
-  )
 
-func _process(delta):
-  if Input.is_action_just_pressed("ui_restart"):
-    Env.dead = false
-    get_tree().reload_current_scene()
-  if visible:
-    kill_on_out_of_bounds()
+  global_position.x = Env.slot.position.x
+  global_position.y = Env.slot.position.y
+
+func _input(event):
+  handle_restart(event)
 
 func _physics_process(delta):
-  if Env.dead || Env.paused: return
-  var jump = Input.is_action_pressed("move_jump");
-  if !is_on_floor():
-    velocity.y += GRAVITY * delta
-    velocity.y = min(VSPEED, velocity.y)
+  if Env.paused || Env.dead: return
 
+  if !is_on_floor():
+    if walls > 0 and velocity.y > 0:
+      velocity.y += GRAVITY * (delta / 5)
+      velocity.y = min(velocity.y, GRAVITY)
+    else:
+      velocity.y += GRAVITY * delta
+      velocity.y = min(velocity.y, GRAVITY)
+
+  velocity.x = move_toward(velocity.x, 0, HSPEED)
+
+  handle_player_movement(delta)
+  handle_shooting()
+  handle_animations()
+  move_and_slide()
+
+
+func handle_restart(event):
+  if event.is_action_pressed("kill_player"):
+    kill_player()
+    return
+
+  if event.is_action_pressed("ui_restart"):
+    Env.dead = false
+    get_tree().reload_current_scene()
+
+
+func handle_player_movement(delta):
+  handle_jump()
+  handle_movement()
+
+func handle_jump():
+  if walls > 0 and !is_on_floor() and !is_on_wall() and Input.is_action_pressed("move_jump"):
+    emit_signal("position_changed", global_position)
+    velocity.y = -DJUMP_FORCE
+    $JumpFX.stream = dJumpSound
+    $JumpFX.play()
+
+
+  if Input.is_action_just_pressed("move_jump"):
+    emit_signal("position_changed", global_position)
+
+    if is_on_floor():
+      d_jump = true
+      velocity.y = -JUMP_FORCE
+      $JumpFX.stream = jumpSound
+      $JumpFX.play()
+      return
+
+    if d_jump:
+      velocity.y = -DJUMP_FORCE
+      d_jump = false
+      $JumpFX.stream = dJumpSound
+      $JumpFX.play()
+
+func handle_movement():
   var direction = int(Input.get_axis("move_left", "move_right"))
   match direction:
       -1, 1:
+        emit_signal("position_changed", global_position)
         velocity.x = direction * HSPEED
         $Sprite.flip_h = direction < 0;
       0:
         velocity.x = move_toward(velocity.x, 0, HSPEED)
-
-  handle_animations()
-  handle_jump()
-  handle_shooting()
-  move_and_slide()
 
 """
 ----------------------------
@@ -59,8 +106,13 @@ func _physics_process(delta):
 |
 """
 func handle_animations():
+  if Env.paused: return
+
   if !is_on_floor():
     if velocity.y > 0:
+      if walls > 0:
+        $Sprite.play("Sliding")
+        return
       $Sprite.play("Fall")
       return
     $Sprite.play("Jump")
@@ -72,19 +124,9 @@ func handle_animations():
 
   $Sprite.play("Walk")
 
-func handle_jump():
-  if Input.is_action_just_pressed("move_jump"):
-    if is_on_floor():
-      d_jump = true
-      velocity.y = -JUMP_FORCE
-      return
-
-    if d_jump || on_water:
-      velocity.y = -DJUMP_FORCE
-      d_jump = false
 
 func handle_shooting():
-  if Input.is_action_just_pressed("player_shoot") && visible:
+  if Input.is_action_just_pressed("player_shoot") and walls <= 0 and !Env.dead:
     var bullet = Bullet.instantiate()
     var direction = -1 if $Sprite.flip_h else 1;
     get_parent().add_child(bullet)
@@ -94,17 +136,9 @@ func handle_shooting():
       global_position.x + (10 * direction),
       global_position.y + 2
     )
-    BulletSound.play()
+    $BulletFX.stream = shootSound
+    $BulletFX.play()
 
-func kill_on_out_of_bounds():
-  var x = global_position.x
-  var y = global_position.y
-
-  if y < 0 || y > 720:
-    kill_player()
-
-  if x < 0 || x > 1280:
-    kill_player()
 
 """
 ----------------------------
@@ -115,13 +149,17 @@ func kill_on_out_of_bounds():
 """
 
 func kill_player():
-  emit_blood()
+  visible = false
+
+  $CollisionShape2D.queue_free()
+  $ThreatController.queue_free()
+
+  if Env.global.blood:
+    emit_blood()
+
   MainCollider
   Death.play()
   Env.dead = true
-  $CollisionShape2D.queue_free()
-  $ThreatController.queue_free()
-  visible = false
 
 func emit_blood():
   for i in 36:
@@ -138,11 +176,24 @@ func emit_blood():
 |
 """
 
-func _on_threat_controller_area_or_body_entered(area):
+func _on_threat_controller_area_or_body_entered(_area):
   kill_player()
 
 func _on_save_save_game():
-  if visible:
-    Env.current_settings.room = get_tree().current_scene.name
-    Env.current_settings.position = [ global_position.x, global_position.y ]
-    Env.save()
+  if !Env.dead || Env.paused:
+    Env.slot.room = get_tree().current_scene.name
+
+    Env.slot.position.x = global_position.x
+    Env.slot.position.y = global_position.y
+
+    Env.save("user://%s.json" % Env.nameSlot, Env.slot)
+
+
+func _on_wall_jump_controller_area_entered(area):
+  walls += 1
+
+func _on_wall_jump_controller_area_exited(area):
+  walls -= 1
+
+func handle_camera_movement():
+  pass

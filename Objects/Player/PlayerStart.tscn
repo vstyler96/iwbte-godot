@@ -1,0 +1,18 @@
+[gd_scene load_steps=3 format=3 uid="uid://brw11yx4t1umx"]
+
+[ext_resource type="Script" path="res://Scripts/PlayerStart.gd" id="1_4os1m"]
+[ext_resource type="PackedScene" uid="uid://cj623fc70l5jd" path="res://Rooms/Menu/HUD.tscn" id="2_li68r"]
+
+[node name="PlayerStart" type="Node2D"]
+script = ExtResource("1_4os1m")
+
+[node name="HUD" parent="." instance=ExtResource("2_li68r")]
+z_index = 100
+z_as_relative = false
+clip_contents = true
+custom_minimum_size = Vector2(800, 608)
+offset_right = 800.0
+offset_bottom = 608.0
+
+[node name="Camera2D" type="Camera2D" parent="."]
+anchor_mode = 0

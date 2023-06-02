@@ -1,6 +1,11 @@
 extends Area2D
+class_name Save
 
 signal save_game
+
+func _ready():
+  pass
+  # connect("save_game", Player._on_save_save_game)
 
 func _on_body_entered(body):
   if body is Bullet:

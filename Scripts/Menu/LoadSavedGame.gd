@@ -1,22 +1,27 @@
-extends Node2D
+extends Control
 
-@onready var Env = $"/root/Env"
 @onready var hoverSound = preload("res://Sounds/SFX/DJump.wav")
 
 func _ready():
-  for key  in Env.settings.slots:
-    var button = Button.new()
-    var slot = Env.settings.slots[key]
-    button.theme = preload("res://Rooms/Menu/UI/UI.tres")
-    button.text = "Slot: " + slot.name
-    button.pressed.connect(self.loadSavedGame.bind(key))
-    button.mouse_entered.connect(self._on_button_mouse_entered);
-    $CanvasLayer/CenterMenu/VBoxContainer.add_child(button);
+  if Env.global.slots.size() > 0:
+    $Menu.visible = true
+
+    for key in Env.global.slots:
+      var button = Button.new()
+      button.theme = preload("res://Rooms/Menu/UI/UI.tres")
+      button.text = "Slot (%s)" % key
+      button.pressed.connect(self.loadSavedGame.bind(key))
+      button.mouse_entered.connect(self._on_button_mouse_entered);
+      $Menu/VBoxContainer.add_child(button);
+  else:
+    $EmptyState.visible = true
+
 
 func loadSavedGame(key: String):
-  Env.current_slot = key;
+  Env.readSlot("user://%s.json" % key)
+
   var scene = "res://Rooms/GamePlay/%s.tscn"
-  var room = Env.settings.slots[key].room
+  var room = Env.slot.room
   get_tree().change_scene_to_file(scene % room)
 
 
