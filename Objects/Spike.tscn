@@ -1,10 +1,11 @@
 [gd_scene load_steps=3 format=3 uid="uid://nftjyx2ctr4c"]
 
-[ext_resource type="Script" path="res://Scripts/Spike.gd" id="1_dlp07"]
+[ext_resource type="Script" uid="uid://deii6kiivgpur" path="res://Scripts/Spike.gd" id="1_dlp07"]
 [ext_resource type="Texture2D" uid="uid://c27qpv5wnxjic" path="res://Sprites/Traps/spike.png" id="1_dyw0o"]
 
 [node name="Spike" type="Area2D" groups=["Threats"]]
 collision_layer = 8
+collision_mask = 8
 script = ExtResource("1_dlp07")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]

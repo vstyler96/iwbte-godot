@@ -1,0 +1,27 @@
+[gd_scene load_steps=5 format=4 uid="uid://dikc4pne5rw8p"]
+
+[ext_resource type="Texture2D" uid="uid://dg0jm4w4p2nu5" path="res://Sprites/Tiles/SpikesTile.png" id="1_jpolu"]
+[ext_resource type="Script" uid="uid://deii6kiivgpur" path="res://Scripts/Spike.gd" id="2_b0leg"]
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_e1y8o"]
+texture = ExtResource("1_jpolu")
+texture_region_size = Vector2i(32, 32)
+0:0/0 = 0
+0:0/0/physics_layer_0/polygon_0/points = PackedVector2Array(-0.0419521, -16, -16, 16, 16, 16)
+1:0/0 = 0
+1:0/0/physics_layer_0/polygon_0/points = PackedVector2Array(-16, -16, 0.0346718, 16, 16, -16)
+0:1/0 = 0
+0:1/0/physics_layer_0/polygon_0/points = PackedVector2Array(-16, 0, 16, 16, 16, -16)
+1:1/0 = 0
+1:1/0/physics_layer_0/polygon_0/points = PackedVector2Array(-16, -16, -16, 16, 16, 0.0646973)
+
+[sub_resource type="TileSet" id="TileSet_fff6y"]
+tile_size = Vector2i(32, 32)
+physics_layer_0/collision_layer = 8
+physics_layer_0/collision_mask = 8
+sources/0 = SubResource("TileSetAtlasSource_e1y8o")
+
+[node name="Spikes" type="TileMapLayer"]
+tile_map_data = PackedByteArray("AAD4/wcAAAAAAAAAAAD3/wcAAAAAAAAAAAD2/wcAAAAAAAAAAAD1/wcAAAAAAAAAAAD0/wcAAAAAAAAAAADz/wcAAAAAAAAAAADy/wcAAAAAAAAAAADx/wcAAAAAAAAAAADw/wcAAAAAAAAAAAD8/wUAAAAAAAAAAAD9/wUAAAAAAAAAAADx//3/AAABAAAAAADy//3/AAABAAAAAADz//3/AAABAAAAAAD0//3/AAABAAAAAAD1//3/AAABAAAAAAD2//3/AAABAAAAAAD3//3/AAABAAAAAADt//n/AAABAAEAAADt//r/AAABAAEAAADt//v/AAABAAEAAADt//z/AAABAAEAAAD//wcAAAAAAAAAAAAAAAcAAAAAAAAAAAABAAcAAAAAAAAAAAACAAcAAAAAAAAAAAADAAcAAAAAAAAAAAAEAAcAAAAAAAAAAAAFAAcAAAAAAAAAAAAGAAcAAAAAAAAAAAAHAAcAAAAAAAAAAAAIAAcAAAAAAAAAAAA=")
+tile_set = SubResource("TileSet_fff6y")
+script = ExtResource("2_b0leg")

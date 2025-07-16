@@ -12,7 +12,7 @@ class_name Player
 
 signal position_changed
 
-const GRAVITY = 980
+const GRAVITY = 980.0
 const VSPEED = 400
 const HSPEED = 140
 
@@ -35,9 +35,9 @@ func _physics_process(delta):
   if Env.paused || Env.dead: return
 
   if !is_on_floor():
-    if walls > 0 and velocity.y > 0:
-      velocity.y += GRAVITY * (delta / 5)
-      velocity.y = min(velocity.y, GRAVITY)
+    if walls > 0 and velocity.y > 0 and !is_on_floor():
+      velocity.y += (GRAVITY / 10) * delta
+      velocity.y = min(velocity.y, GRAVITY / 10)
     else:
       velocity.y += GRAVITY * delta
       velocity.y = min(velocity.y, GRAVITY)
@@ -49,7 +49,6 @@ func _physics_process(delta):
   handle_animations()
   move_and_slide()
 
-
 func handle_restart(event):
   if event.is_action_pressed("kill_player"):
     kill_player()
@@ -59,8 +58,7 @@ func handle_restart(event):
     Env.dead = false
     get_tree().reload_current_scene()
 
-
-func handle_player_movement(delta):
+func handle_player_movement(_delta):
   handle_jump()
   handle_movement()
 
@@ -157,16 +155,15 @@ func kill_player():
   if Env.global.blood:
     emit_blood()
 
-  MainCollider
   Death.play()
   Env.dead = true
 
 func emit_blood():
-  for i in 36:
+  for i in range(0, 360, 10):
     var blood = Blood.instantiate()
     blood.global_position = global_position
     get_parent().add_child(blood)
-    blood.linear_velocity = Vector2.from_angle(i * 60) * 1200
+    blood.linear_velocity = Vector2.from_angle(i) * 1200
 
 """
 ----------------------------
@@ -189,10 +186,10 @@ func _on_save_save_game():
     Env.save("user://%s.json" % Env.nameSlot, Env.slot)
 
 
-func _on_wall_jump_controller_area_entered(area):
+func _on_wall_jump_controller_area_entered(_area):
   walls += 1
 
-func _on_wall_jump_controller_area_exited(area):
+func _on_wall_jump_controller_area_exited(_area):
   walls -= 1
 
 func handle_camera_movement():
