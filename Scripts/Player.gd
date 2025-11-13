@@ -6,13 +6,13 @@ class_name Player
 @onready var shootSound = preload("res://Sounds/SFX/Shoot.wav")
 
 @onready var Death = $OnDeath
-@onready var Bullet = preload("res://Objects/Bullet.res")
+@onready var UIBullet = preload("res://Objects/Bullet.res")
 @onready var Blood = preload("res://Objects/Player/Blood.tscn")
 @onready var MainCollider = $CollisionShape2D
 
 signal position_changed
 
-const GRAVITY = 980.0
+const GRAVITY = 980.0 * 1.25
 const VSPEED = 400
 const HSPEED = 140
 
@@ -125,7 +125,7 @@ func handle_animations():
 
 func handle_shooting():
   if Input.is_action_just_pressed("player_shoot") and walls <= 0 and !Env.dead:
-    var bullet = Bullet.instantiate()
+    var bullet = UIBullet.instantiate()
     var direction = -1 if $Sprite.flip_h else 1;
     get_parent().add_child(bullet)
     bullet.rotation *= direction
@@ -152,7 +152,7 @@ func kill_player():
   $CollisionShape2D.queue_free()
   $ThreatController.queue_free()
 
-  if Env.global.blood:
+  if Env.settings.blood:
     emit_blood()
 
   Death.play()
@@ -177,13 +177,13 @@ func _on_threat_controller_area_or_body_entered(_area):
   kill_player()
 
 func _on_save_save_game():
-  if !Env.dead || Env.paused:
-    Env.slot.room = get_tree().current_scene.name
+  if !Env.dead && !Env.paused:
+    Env.slot["room"] = get_tree().current_scene.name
 
     Env.slot.position.x = global_position.x
     Env.slot.position.y = global_position.y
 
-    Env.save("user://%s.json" % Env.nameSlot, Env.slot)
+    Env.updateSlot()
 
 
 func _on_wall_jump_controller_area_entered(_area):

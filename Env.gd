@@ -1,123 +1,72 @@
 extends Node
 
-const fileSettings: String = "user://IWFIO.json"
-
-"""
-|--------------------
-| Global elements.
-|--------------------
-|
-| Check current slot and the global settings as controls and blood emision.
-|
-"""
-var global: Dictionary = {}
-var slot: Dictionary = {}
-var nameSlot: String
-
-"""
-|--------------------
-| In Game Variables
-|--------------------
-|
-| All default in game variables like pause state or check if the player is dead.
-|
-"""
-var paused: bool = false
-var dead: bool = false
-
-"""
-|--------------------
-| Default elements.
-|--------------------
-|
-| Default values for reusing them accross the game.
-|
-"""
-const defaults: Dictionary = {
-  "name": null,
-  "defeated": {
-    "loneliness": false,
-    "sadness": false,
-    "guiltiness": false,
-    "anger": false,
-    "negativity": false,
-    "oblivion": false,
-  },
-  "items": [],
-  "position": {},
-  "retries": 0,
-  "difficulty": 0, # 0: easy; 1: normal; 2: hard: 3; Very Hard: 4; Impossible: 5
-  "room": "roomStart",
+const difficulty: Dictionary = {
+  "EASY": 1,
+  "NORMAL": 2,
+  "HARD": 4,
+  "VERY_HARD": 8,
+  "IMPOSSIBLE": 16,
 }
 
+const file: String = "user://settings.json"
+const defaultSettings: Dictionary = {
+  "music": -20,
+  "sfx": -20,
+  "ui": -20,
+  "blood": true,
+  "fullscreen": false,
+  "slots": [],
+}
+const defaultSlot: Dictionary = {
+  "position": {
+    "x": 176,
+    "y": 352,
+  },
+  "room": "roomStart",
+  "retries": 0,
+  "difficulty": difficulty.EASY,
+}
+
+var settings: Dictionary
+var slot: Dictionary
+var slotIndex: int = 0
+var dead: bool = false
+var paused: bool = false
 
 func _ready():
-  if (!FileAccess.file_exists(fileSettings)):
-    global = {
-      "blood": true,
-      "controls": {
-        "jump": "up",
-        "left": "left",
-        "right": "right",
-        "shoot": "z",
-      },
-      "max_slots": null, # null means no limit.
-      "slots": [],
-      "volume": {
-        "music": 0,
-        "sfx": 0,
-      },
-    }
-    save(fileSettings, global)
-    return
+  setupSettings()
+  setupAudio()
 
-  readGlobal(fileSettings)
+func createSettings():
+  Storage.save(file, defaultSettings)
+  return defaultSettings
+
+func readSettings():
+  return Storage.read(file)
+
+func setupSettings():
+  settings = readSettings() if FileAccess.file_exists(file) else createSettings()
+
+func setupAudio():
+  # Set audio volumes
+  AudioServer.set_bus_volume_db(AudioServer.get_bus_index("Music"), settings.music)
+  AudioServer.set_bus_volume_db(AudioServer.get_bus_index("SFX"), settings.sfx)
+  AudioServer.set_bus_volume_db(AudioServer.get_bus_index("UI"), settings.ui)
 
 
-func findSlotOrCreate(date, position):
-  if position == null:
-    print("No position provided, exiting of method.")
-    return
+func loadSlot(index: int):
+  var slotExists = FileAccess.file_exists("user://%s.sav" % index)
+  slot = Storage.readEncrypted("user://%s.sav" % index) if slotExists else defaultSlot.duplicate(true)
+  slotIndex = index
 
-  var fallback = "user://%s.json" % date
-  if !FileAccess.open(fallback, FileAccess.READ):
-    createSlot(fallback, position, date)
-    return
+func createSlot():
+  var index = settings.slots.size() + 1
+  slot = defaultSlot.duplicate(true)
+  slotIndex = index
+  Storage.saveEncrypted("user://%s.sav" % index, slot)
 
-  readSlot(fallback)
+  settings.slots.append(index)
+  Storage.save(file, settings)
 
-
-func createSlot(filename, position, date):
-  # Check if the user has the max slots size activated.
-  # In that case we should prevent the creation of a new slot.
-  if global.max_slots != null and global.max_slots <= (global.slots.size() + 1):
-    return
-
-  slot = defaults.duplicate()
-  slot.name = date
-  slot.position = position
-  save(filename, slot)
-
-  global.slots.push_back(date)
-  save(fileSettings, global)
-
-  Env.nameSlot = date
-
-
-func save(filename, object):
-  var handler = FileAccess.open(filename, FileAccess.WRITE_READ)
-  handler.store_string(JSON.stringify(object, "  "))
-  handler = null
-
-
-func readGlobal(filename):
-  var handler = FileAccess.open(filename, FileAccess.READ)
-  global = JSON.parse_string(handler.get_as_text())
-  handler = null
-
-
-func readSlot(filename):
-  var handler = FileAccess.open(filename, FileAccess.READ)
-  slot = JSON.parse_string(handler.get_as_text())
-  Env.nameSlot = slot.name
-  handler = null
+func updateSlot():
+  Storage.saveEncrypted("user://%s.sav" % slotIndex, slot)

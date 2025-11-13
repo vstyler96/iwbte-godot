@@ -13,13 +13,14 @@ config_version=5
 config/name="I Wanna Fall into Oblivion"
 config/version="1.0.0"
 run/main_scene="res://Rooms/Menu/Menu.tscn"
-config/features=PackedStringArray("4.4", "Forward Plus")
+config/features=PackedStringArray("4.5", "Forward Plus")
 boot_splash/show_image=false
 config/icon="res://icon.png"
 
 [autoload]
 
 Env="*res://Env.gd"
+Storage="*res://Scripts/Save/Storage.gd"
 
 [display]
 

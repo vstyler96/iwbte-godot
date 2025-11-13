@@ -7,11 +7,6 @@ var player: Player;
 func _ready():
   Env.dead = false
   Env.paused = false
-  if Env.nameSlot.is_empty():
-    Env.findSlotOrCreate(
-      Time.get_datetime_string_from_system(),
-      { "x": 176, "y": 352 }
-    )
 
   player = Playable.instantiate();
 
