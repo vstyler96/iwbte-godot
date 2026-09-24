@@ -1,4 +1,4 @@
-[gd_scene load_steps=27 format=3 uid="uid://w5hdjh88a5di"]
+[gd_scene format=3 uid="uid://w5hdjh88a5di"]
 
 [ext_resource type="Script" uid="uid://bjalnjcjli6jq" path="res://Scripts/Player.gd" id="1_cfd6i"]
 [ext_resource type="Texture2D" uid="uid://pxderxxuhvd8" path="res://Sprites/Player/playerFall.png" id="2_1y5o2"]
@@ -79,7 +79,7 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_pkbmv")
 }],
-"loop": true,
+"loop": 1,
 "name": &"Fall",
 "speed": 8.0
 }, {
@@ -96,7 +96,7 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_yfx3h")
 }],
-"loop": true,
+"loop": 1,
 "name": &"Idle",
 "speed": 8.0
 }, {
@@ -107,7 +107,7 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_pi4bj")
 }],
-"loop": true,
+"loop": 1,
 "name": &"Jump",
 "speed": 8.0
 }, {
@@ -118,7 +118,7 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_tnfom")
 }],
-"loop": true,
+"loop": 1,
 "name": &"Sliding",
 "speed": 5.0
 }, {
@@ -138,54 +138,56 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_gkqqi")
 }],
-"loop": true,
+"loop": 1,
 "name": &"Walk",
 "speed": 12.0
 }]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_5ilrj"]
-size = Vector2(16, 20)
+size = Vector2(14, 20)
 
-[node name="Player" type="CharacterBody2D" groups=["Player"]]
+[node name="Player" type="CharacterBody2D" unique_id=1575992144 groups=["Player"]]
 script = ExtResource("1_cfd6i")
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=245621055]
 position = Vector2(1, 6)
 shape = ExtResource("2_do4t1")
 debug_color = Color(0.168627, 0.6, 0.658824, 0.419608)
 
-[node name="Sprite" type="AnimatedSprite2D" parent="."]
+[node name="Sprite" type="AnimatedSprite2D" parent="." unique_id=719950385]
 sprite_frames = SubResource("SpriteFrames_ctooa")
 animation = &"Sliding"
 autoplay = "Idle"
 
-[node name="ThreatController" type="Area2D" parent="." groups=["Player"]]
+[node name="ThreatController" type="Area2D" parent="." unique_id=789724956 groups=["Player"]]
 collision_layer = 8
 collision_mask = 8
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="ThreatController"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="ThreatController" unique_id=1660632516]
 position = Vector2(1, 6)
 shape = ExtResource("2_do4t1")
 debug_color = Color(0.901961, 0.196078, 0.592157, 0.419608)
 
-[node name="WallJumps" type="Node2D" parent="."]
+[node name="WallJumps" type="Node2D" parent="." unique_id=1588339480]
 
-[node name="WallJumpController" type="Area2D" parent="WallJumps" groups=["WallJump"]]
+[node name="WallJumpController" type="Area2D" parent="WallJumps" unique_id=1378268607 groups=["WallJump"]]
+collision_layer = 16
+collision_mask = 16
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="WallJumps/WallJumpController"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="WallJumps/WallJumpController" unique_id=1571895906]
 position = Vector2(1, 6)
 shape = SubResource("RectangleShape2D_5ilrj")
 debug_color = Color(0, 0.647059, 0.223529, 0.419608)
 
-[node name="BulletFX" type="AudioStreamPlayer2D" parent="."]
+[node name="BulletFX" type="AudioStreamPlayer2D" parent="." unique_id=1140188787]
 stream = ExtResource("4_nlj2t")
 bus = &"SFX"
 
-[node name="OnDeath" type="AudioStreamPlayer2D" parent="."]
+[node name="OnDeath" type="AudioStreamPlayer2D" parent="." unique_id=2114778218]
 stream = ExtResource("3_1odat")
 bus = &"Music"
 
-[node name="JumpFX" type="AudioStreamPlayer2D" parent="."]
+[node name="JumpFX" type="AudioStreamPlayer2D" parent="." unique_id=1760707716]
 
 [connection signal="area_entered" from="ThreatController" to="." method="_on_threat_controller_area_or_body_entered"]
 [connection signal="body_entered" from="ThreatController" to="." method="_on_threat_controller_area_or_body_entered"]

@@ -18,6 +18,7 @@ const HSPEED = 140
 
 const JUMP_FORCE = 400
 const DJUMP_FORCE = 330
+const BLOOD_AMOUNT = 360
 var d_jump: bool = true
 var on_water: bool = false
 var walls: int = 0
@@ -36,8 +37,8 @@ func _physics_process(delta):
 
   if !is_on_floor():
     if walls > 0 and velocity.y > 0 and !is_on_floor():
-      velocity.y += (GRAVITY / 10) * delta
-      velocity.y = min(velocity.y, GRAVITY / 10)
+      velocity.y += (GRAVITY / 20) * delta
+      velocity.y = min(velocity.y, GRAVITY / 20)
     else:
       velocity.y += GRAVITY * delta
       velocity.y = min(velocity.y, GRAVITY)
@@ -63,17 +64,10 @@ func handle_player_movement(_delta):
   handle_movement()
 
 func handle_jump():
-  if walls > 0 and !is_on_floor() and !is_on_wall() and Input.is_action_pressed("move_jump"):
-    emit_signal("position_changed", global_position)
-    velocity.y = -DJUMP_FORCE
-    $JumpFX.stream = dJumpSound
-    $JumpFX.play()
-
-
   if Input.is_action_just_pressed("move_jump"):
     emit_signal("position_changed", global_position)
 
-    if is_on_floor():
+    if is_on_floor() or walls > 0:
       d_jump = true
       velocity.y = -JUMP_FORCE
       $JumpFX.stream = jumpSound
@@ -159,11 +153,13 @@ func kill_player():
   Env.dead = true
 
 func emit_blood():
-  for i in range(0, 360, 10):
+  # Blood is on no collision layer (see Blood.tscn), so drops only hit walls,
+  # not each other; drop-vs-drop collisions were what made this lag.
+  for i in BLOOD_AMOUNT:
     var blood = Blood.instantiate()
     blood.global_position = global_position
     get_parent().add_child(blood)
-    blood.linear_velocity = Vector2.from_angle(i) * 1200
+    blood.linear_velocity = Vector2.from_angle(randf() * TAU) * randf_range(0.3, 1.0) * 1200
 
 """
 ----------------------------
@@ -190,7 +186,7 @@ func _on_wall_jump_controller_area_entered(_area):
   walls += 1
 
 func _on_wall_jump_controller_area_exited(_area):
-  walls -= 1
+  walls -= 1;
 
 func handle_camera_movement():
   pass

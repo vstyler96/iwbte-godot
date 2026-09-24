@@ -4,9 +4,12 @@ extends Node
 @onready var Buttons = $Buttons
 @onready var hoverSound = preload("res://Sounds/SFX/DJump.wav")
 
+func _ready():
+  $Buttons/NewGame.disabled = Env.settings.slots.size() >= Env.maxSlots
+
 func _on_new_game_pressed():
-  Env.createSlot()
-  get_tree().change_scene_to_file("res://Rooms/GamePlay/roomStart.tscn")
+  if Env.createSlot():
+    get_tree().change_scene_to_file("res://Rooms/GamePlay/roomStart.tscn")
 
 func _on_load_game_pressed():
   get_tree().change_scene_to_file("res://Rooms/Menu/LoadSavedGame.tscn")

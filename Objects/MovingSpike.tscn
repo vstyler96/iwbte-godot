@@ -1,0 +1,17 @@
+[gd_scene format=3 uid="uid://c5r0t3j53uhox"]
+
+[ext_resource type="PackedScene" uid="uid://nftjyx2ctr4c" path="res://Objects/Spike.tscn" id="1_spike"]
+[ext_resource type="Script" uid="uid://tfaevfgc7i6a" path="res://Scripts/MovingSpike.gd" id="2_moving"]
+
+[node name="MovingSpike" unique_id=1710383173 instance=ExtResource("1_spike")]
+script = ExtResource("2_moving")
+trigger_offset = Vector2(0, -64)
+trigger_size = Vector2(32, 32)
+direction = 0
+speed = 600.0
+enabled_on = 31
+
+[node name="VisibleOnScreenNotifier2D" type="VisibleOnScreenNotifier2D" parent="." index="2" unique_id=414747032]
+rect = Rect2(-16, -16, 32, 32)
+
+[connection signal="screen_exited" from="VisibleOnScreenNotifier2D" to="." method="queue_free"]

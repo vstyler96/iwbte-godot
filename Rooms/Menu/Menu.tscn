@@ -1,12 +1,11 @@
-[gd_scene load_steps=5 format=3 uid="uid://bnqc52wvtsr1i"]
+[gd_scene format=3 uid="uid://bnqc52wvtsr1i"]
 
 [ext_resource type="Theme" uid="uid://bqdflqrhvjq6v" path="res://Rooms/Menu/UI/UI.tres" id="1_btnrp"]
 [ext_resource type="Script" uid="uid://btg8jmo7p6u66" path="res://Scripts/Menu/MenuController.gd" id="1_s27il"]
 [ext_resource type="AudioStream" uid="uid://bnycwcqdqk0nc" path="res://Sounds/track01.mp3" id="2_b5o58"]
 [ext_resource type="FontFile" uid="uid://ds88wacg6xix4" path="res://Fonts/GenericMobileSystemNuevo.ttf" id="3_a2yqa"]
 
-[node name="Menu" type="Control"]
-layout_direction = 1
+[node name="Menu" type="Control" unique_id=830498832]
 layout_mode = 3
 anchors_preset = 8
 anchor_left = 0.5
@@ -17,9 +16,10 @@ grow_horizontal = 2
 grow_vertical = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
+layout_direction = 1
 script = ExtResource("1_s27il")
 
-[node name="Buttons" type="VBoxContainer" parent="."]
+[node name="Buttons" type="VBoxContainer" parent="." unique_id=248229830]
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -34,7 +34,7 @@ grow_horizontal = 2
 grow_vertical = 2
 metadata/_edit_use_anchors_ = true
 
-[node name="Title" type="Label" parent="Buttons"]
+[node name="Title" type="Label" parent="Buttons" unique_id=1191390788]
 layout_mode = 2
 theme = ExtResource("1_btnrp")
 theme_override_fonts/font = ExtResource("3_a2yqa")
@@ -42,22 +42,22 @@ theme_override_font_sizes/font_size = 50
 text = "I Wanna Fall Into Oblivion!"
 horizontal_alignment = 1
 
-[node name="NewGame" type="Button" parent="Buttons"]
+[node name="NewGame" type="Button" parent="Buttons" unique_id=454957773]
 layout_mode = 2
 theme = ExtResource("1_btnrp")
 text = "New  Game"
 
-[node name="LoadGame" type="Button" parent="Buttons"]
+[node name="LoadGame" type="Button" parent="Buttons" unique_id=1765960106]
 layout_mode = 2
 theme = ExtResource("1_btnrp")
 text = "Load Game"
 
-[node name="Settings" type="Button" parent="Buttons"]
+[node name="Settings" type="Button" parent="Buttons" unique_id=1122687706]
 layout_mode = 2
 theme = ExtResource("1_btnrp")
 text = "Settings"
 
-[node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="."]
+[node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="." unique_id=1982019507]
 stream = ExtResource("2_b5o58")
 
 [connection signal="mouse_entered" from="Buttons/NewGame" to="." method="_on_button_mouse_entered"]

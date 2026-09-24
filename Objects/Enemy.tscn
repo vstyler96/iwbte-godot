@@ -1,0 +1,32 @@
+[gd_scene format=3 uid="uid://phty1r65l4np"]
+
+[ext_resource type="Script" uid="uid://cfo0bglymh1ir" path="res://Scripts/Enemy.gd" id="1_enemy"]
+[ext_resource type="Texture2D" uid="uid://dmoli2wn4f43y" path="res://Sprites/Enemy.png" id="2_sprite"]
+[ext_resource type="AudioStream" uid="uid://blsn6bcj7ah6c" path="res://Sounds/SFX/BossHit.wav" id="3_hit"]
+[ext_resource type="AudioStream" uid="uid://dlyeds6vavhn7" path="res://Sounds/SFX/Death.wav" id="5_death"]
+[ext_resource type="Script" uid="uid://clacg38d88kqv" path="res://Scripts/CherryThrower.gd" id="4_thrower"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_enemy"]
+radius = 31.0
+
+[node name="Enemy" type="Area2D" unique_id=863868599 groups=["Threats"]]
+collision_layer = 8
+script = ExtResource("1_enemy")
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=1631559196]
+rotation = -0.007216772
+texture = ExtResource("2_sprite")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1770429145]
+shape = SubResource("CircleShape2D_enemy")
+
+[node name="HitFX" type="AudioStreamPlayer2D" parent="." unique_id=884921696]
+stream = ExtResource("3_hit")
+bus = &"SFX"
+
+[node name="DeathFX" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("5_death")
+bus = &"SFX"
+
+[node name="CherryThrower" type="Node2D" parent="." unique_id=1095807219]
+script = ExtResource("4_thrower")

@@ -8,6 +8,7 @@ const difficulty: Dictionary = {
   "IMPOSSIBLE": 16,
 }
 
+const maxSlots: int = 3
 const file: String = "user://settings.json"
 const defaultSettings: Dictionary = {
   "music": -20,
@@ -26,6 +27,14 @@ const defaultSlot: Dictionary = {
   "retries": 0,
   "difficulty": difficulty.EASY,
 }
+const nameAdjectives: Array[String] = [
+  "Soggy", "Brave", "Sneaky", "Wobbly", "Grumpy", "Crispy", "Sleepy", "Spicy",
+  "Clumsy", "Fluffy", "Cursed", "Sweaty", "Tiny", "Angry", "Confused",
+]
+const nameNouns: Array[String] = [
+  "Cherry", "Spike", "Kid", "Apple", "Pickle", "Noodle", "Potato", "Goblin",
+  "Waffle", "Banana", "Nugget", "Toaster", "Llama", "Muffin", "Oblivion",
+]
 
 var settings: Dictionary
 var slot: Dictionary
@@ -39,13 +48,15 @@ func _ready():
 
 func createSettings():
   Storage.save(file, defaultSettings)
-  return defaultSettings
+  return defaultSettings.duplicate(true)
 
 func readSettings():
   return Storage.read(file)
 
 func setupSettings():
   settings = readSettings() if FileAccess.file_exists(file) else createSettings()
+  # JSON loads numbers as floats; keep slot ids as ints so has()/erase() match.
+  settings.slots = settings.get("slots", []).map(func(i): return int(i))
 
 func setupAudio():
   # Set audio volumes
@@ -56,16 +67,32 @@ func setupAudio():
 
 func loadSlot(index: int):
   var slotExists = FileAccess.file_exists("user://%s.sav" % index)
-  slot = Storage.readEncrypted("user://%s.sav" % index) if slotExists else defaultSlot.duplicate(true)
+  slot = Storage.readEncrypted("user://%s.sav" % index) if slotExists else {}
+  if slot.is_empty():
+    slot = defaultSlot.duplicate(true)
+  # JSON loads numbers as floats; difficulty is used as bit flags, so keep it an int.
+  slot.difficulty = int(slot.get("difficulty", difficulty.EASY))
   slotIndex = index
 
-func createSlot():
-  var index = settings.slots.size() + 1
+func createSlot() -> bool:
+  if settings.slots.size() >= maxSlots:
+    return false
+
+  var index = 1
+  while settings.slots.has(index):
+    index += 1
   slot = defaultSlot.duplicate(true)
+  slot.name = "%s %s" % [nameAdjectives.pick_random(), nameNouns.pick_random()]
   slotIndex = index
   Storage.saveEncrypted("user://%s.sav" % index, slot)
 
   settings.slots.append(index)
+  Storage.save(file, settings)
+  return true
+
+func deleteSlot(index: int):
+  DirAccess.remove_absolute("user://%s.sav" % index)
+  settings.slots.erase(index)
   Storage.save(file, settings)
 
 func updateSlot():

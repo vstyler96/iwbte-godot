@@ -1,9 +1,9 @@
-# I Wanna Be The Engine (IWBTE) - Godot 4
+# I Wanna Be The Engine (IWBTE) - Godot 4.7
 
 🤖 **A complete game engine for creating "I Wanna Be The Guy" style games in Godot 4.4**
 
 [![Godot](https://img.shields.io/badge/Godot-4.4-blue.svg)](https://godotengine.org/)
-[![License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
+[![License](https://img.shields.io/badge/license-AGPLv3.0-green.svg)](LICENSE)
 
 ## About
 
@@ -191,7 +191,6 @@ This engine is designed to be easily extensible. Common additions:
 ## Credits
 
 - Original "I Wanna Be The Guy" by [Kayin](https://kayin.itch.io/iwbtg)
-- Engine inspired by [iwbte-godot](https://github.com/vstyler96/iwbte-godot)
 - Built with [Godot Engine](https://godotengine.org/)
 
 ## License

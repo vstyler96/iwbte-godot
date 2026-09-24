@@ -1,0 +1,24 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://Scripts/Cherry.gd" id="1_cherry"]
+[ext_resource type="Texture2D" uid="uid://jpijety8qsse" path="res://Sprites/Traps/Cherrys/cherry.png" id="2_sprite"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_cherry"]
+radius = 9.0
+
+[node name="Cherry" type="Area2D" groups=["Threats"]]
+collision_layer = 8
+collision_mask = 0
+script = ExtResource("1_cherry")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("2_sprite")
+hframes = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_cherry")
+
+[node name="VisibleOnScreenNotifier2D" type="VisibleOnScreenNotifier2D" parent="."]
+rect = Rect2(-11, -12, 22, 24)
+
+[connection signal="screen_exited" from="VisibleOnScreenNotifier2D" to="." method="queue_free"]

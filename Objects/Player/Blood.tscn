@@ -6,6 +6,7 @@
 size = Vector2(2, 2)
 
 [node name="Blood" type="RigidBody2D"]
+collision_layer = 0
 gravity_scale = 0.36
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
